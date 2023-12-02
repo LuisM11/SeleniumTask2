@@ -9,7 +9,7 @@ public class CreatedPastePage extends AbstractPage{
     private static final Logger logger = LogManager.getLogger(CreatedPastePage.class);
     @FindBy(css = "div.left a:first-child")
     private WebElement highlightingTag;
-    @FindBy(css = "div.de1")
+    @FindBy(css = "ol.bash")
     protected WebElement paragraph;
 
     public CreatedPastePage(WebDriver driver) {

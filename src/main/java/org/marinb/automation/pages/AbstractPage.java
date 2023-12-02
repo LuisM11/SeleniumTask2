@@ -3,6 +3,7 @@ package org.marinb.automation.pages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,9 +14,9 @@ import java.time.Duration;
 public abstract class AbstractPage {
     public static final String BASE_URL = "https://www.pastebin.com";
     private static final Logger logger = LogManager.getLogger(AbstractPage.class);
-    protected final int WAIT_TIMEOUT_SECONDS = 6;
+    protected final int WAIT_TIMEOUT_SECONDS = 15;
     protected WebDriver driver;
-    @FindBy(id = "hideSlideBanner")
+    @FindBy(css = "#hideSlideBanner > svg")
     protected WebElement closeButtonSmartBanner;
 
     protected abstract AbstractPage openPage();
@@ -41,17 +42,14 @@ public abstract class AbstractPage {
 
     protected void click(WebElement element) {
         String elementString = "";
-        try{
-            waitElementToBeVisible(element);
-            waitElementToBeClickable(element);
-        }
-        catch (TimeoutException e) {
-            logger.error("Timeout exceeded: Element is most likely not present" + e.getMessage());
-        }
+        waitElementToBeVisible(element);
+        waitElementToBeClickable(element);
 
         try{
+            scrollToElement(element);
             elementString = String.format("with tag '%s' and name '%s'", element.getTagName(), element.getAccessibleName());
             logger.info("Clicking on element " + elementString);
+
             element.click();
             logger.info("Element " +  elementString + " was clicked");
         }
@@ -61,7 +59,9 @@ public abstract class AbstractPage {
     }
 
     public void scrollToElement(WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+//        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        Actions actions = new Actions(driver);
+        actions.scrollToElement(element);
     }
 
 

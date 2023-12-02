@@ -36,7 +36,7 @@ public class HomePage extends AbstractPage{
     public HomePage openPage() {
         logger.info("Opening home page");
         driver.get(BASE_URL);
-        driver.manage().deleteAllCookies();
+//        driver.manage().deleteAllCookies();
         driver.manage().window().maximize();
         return this;
     }

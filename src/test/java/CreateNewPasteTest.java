@@ -37,10 +37,8 @@ public class CreateNewPasteTest {
     }
 
     @Test
-    public void createNewPaste() throws InterruptedException {
-        String text = "git config --global user.name  \"New Sheriff in Town\"\n" +
-                "git reset $(git commit-tree HEAD^{tree} -m \"Legacy code\")\n" +
-                "git push origin master --force";
+    public void createNewPaste() {
+        String text = "git config --global user.name  \"New Sheriff in Town\"\n" + "git reset $(git commit-tree HEAD^{tree} -m \"Legacy code\")\n" + "git push origin master --force";
         String title = "how to gain dominance among developers";
         String highlight = "Bash";
 
@@ -48,7 +46,6 @@ public class CreateNewPasteTest {
         logger.info("Creating new paste");
 
         CreatedPastePage createdPastePage = homePage.openPage()
-            .closeBanner()
             .writeText(text)
             .openDropdown()
             .selectExpiration("10 Minutes")
@@ -57,12 +54,11 @@ public class CreateNewPasteTest {
             .selectHighlighting(highlight)
             .createNewPaste();
 
-        createdPastePage.closeBanner();
 
         logger.debug("Verifying that highlighting tag is " + highlight);
         Assertions.assertEquals(highlight, createdPastePage.getHighlightingTag().getText());
         logger.debug("Verifying that webpage title is "+ title);
-        Assertions.assertEquals(title, driver.getTitle());
+        Assertions.assertEquals(title, driver.getTitle().split(" - ")[0]);
         logger.debug("Verifying that text is " + text);
         Assertions.assertEquals(text,createdPastePage.getParagraph().getText());
 

@@ -73,7 +73,7 @@ public class HomePage extends AbstractPage{
 
     public HomePage openHighlightDropdown() {
         waitElementToBeClickable(highlightDropdownLabel);
-        highlightDropdownLabel.click();
+        click(highlightDropdownLabel);
         return this;
     }
 

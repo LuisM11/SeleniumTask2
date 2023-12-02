@@ -84,6 +84,7 @@ public class HomePage extends AbstractPage{
     }
 
     public CreatedPastePage createNewPaste()  {
+        scrollToElement(createNewPasteButton);
         click(createNewPasteButton);
         return new CreatedPastePage(driver);
     }

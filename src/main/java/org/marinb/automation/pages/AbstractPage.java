@@ -42,11 +42,11 @@ public abstract class AbstractPage {
 
     protected void click(WebElement element) {
         String elementString = "";
+
         waitElementToBeVisible(element);
         waitElementToBeClickable(element);
 
         try{
-            scrollToElement(element);
             elementString = String.format("with tag '%s' and name '%s'", element.getTagName(), element.getAccessibleName());
             logger.info("Clicking on element " + elementString);
 
@@ -59,9 +59,8 @@ public abstract class AbstractPage {
     }
 
     public void scrollToElement(WebElement element) {
-//        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+//        new Actions(driver).moveToElement(element).perform();
     }
 
 

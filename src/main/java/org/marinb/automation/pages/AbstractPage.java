@@ -13,7 +13,7 @@ import java.time.Duration;
 public abstract class AbstractPage {
     public static final String BASE_URL = "https://www.pastebin.com";
     private static final Logger logger = LogManager.getLogger(AbstractPage.class);
-    protected final int WAIT_TIMEOUT_SECONDS = 5;
+    protected final int WAIT_TIMEOUT_SECONDS = 6;
     protected WebDriver driver;
     @FindBy(id = "hideSlideBanner")
     protected WebElement closeButtonSmartBanner;
@@ -29,7 +29,7 @@ public abstract class AbstractPage {
     protected FluentWait<WebDriver> createWait() {
         return new FluentWait<>(driver).
                 withTimeout(Duration.ofSeconds(WAIT_TIMEOUT_SECONDS)).
-                pollingEvery(Duration.ofMillis(250)).
+                pollingEvery(Duration.ofMillis(500)).
                 ignoring(NotFoundException.class);
     }
     protected void waitElementToBeClickable(WebElement element) {
@@ -42,19 +42,21 @@ public abstract class AbstractPage {
     protected void click(WebElement element) {
         String elementString = "";
         try{
-            elementString = String.format("with tag '%s' and name '%s'", element.getTagName(), element.getAccessibleName());
-            logger.info("Clicking on element " + elementString);
             waitElementToBeVisible(element);
             waitElementToBeClickable(element);
-            element.click();
-            logger.info("Element " +  elementString + " was clicked");
-
         }
         catch (TimeoutException e) {
-            logger.error("Timeout exceeded: " + e.getMessage());
+            logger.error("Timeout exceeded: Element is most likely not present" + e.getMessage());
+        }
+
+        try{
+            elementString = String.format("with tag '%s' and name '%s'", element.getTagName(), element.getAccessibleName());
+            logger.info("Clicking on element " + elementString);
+            element.click();
+            logger.info("Element " +  elementString + " was clicked");
         }
         catch (NoSuchElementException | StaleElementReferenceException e){
-            logger.error("Element not Found: " + e.getMessage());
+            logger.error("Element not Found: " + e.getMessage() );
         }
     }
 
